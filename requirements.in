@@ -1,0 +1,10 @@
+black
+isort
+pycln
+pydantic
+django
+pytest
+pytest-django
+freezegun
+requests
+
