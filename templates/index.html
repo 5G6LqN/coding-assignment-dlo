@@ -5,13 +5,28 @@
     <title>Title</title>
 </head>
 <body>
+<h1>Professional Account</h1>
 <form action="{% url 'redirect_to_professional_account' %}" method="POST">
     {% csrf_token %}
     <button type="submit">Go to Professional Account</button>
 </form>
+</p>
+<form action="{% url 'redirect_to_professional_account_with_redirect_target' %}" method="POST">
+    {% csrf_token %}
+    {{ redirect_target_careprovider_form.as_p }}
+    <button type="submit">Go to Professional Account with redirect</button>
+</form>
+<h1>Client Account</h1>
 <form action="{% url 'redirect_to_client_account' %}" method="POST">
     {% csrf_token %}
     <button type="submit">Go to Client Account</button>
 </form>
+</p>
+<form action="{% url 'redirect_to_client_account_with_redirect_target' %}" method="POST">
+    {% csrf_token %}
+    {{ redirect_target_client_form.as_p }}
+    <button type="submit">Go to Client Account with redirect</button>
+</form>
+
 </body>
 </html>

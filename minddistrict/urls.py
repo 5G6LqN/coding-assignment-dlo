@@ -33,4 +33,14 @@ urlpatterns = [
         dlo_views.redirect_to_client_account,
         name="redirect_to_client_account",
     ),
+    path(
+        "redirect_to_professional_account_with_redirect_target/",
+        dlo_views.redirect_to_professional_account_with_redirect_target,
+        name="redirect_to_professional_account_with_redirect_target",
+    ),
+    path(
+        "redirect_to_client_account_with_redirect_target/",
+        dlo_views.redirect_to_client_account_with_redirect_target,
+        name="redirect_to_client_account_with_redirect_target",
+    ),
 ]

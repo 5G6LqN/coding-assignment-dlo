@@ -4,7 +4,7 @@ import os
 import time
 import uuid
 from enum import StrEnum
-from typing import Union, Optional
+from typing import Optional, Union
 from urllib.parse import urlencode
 
 from pydantic import BaseModel
@@ -17,6 +17,7 @@ class UserType(StrEnum):
     CAREPROVIDER = "careprovider"
     CLIENT = "client"
 
+
 class RedirectTargetCareprovider(StrEnum):
     TASKS = "tasks"
     MY_CLIENTS = "c"
@@ -25,9 +26,11 @@ class RedirectTargetCareprovider(StrEnum):
     CONFIGURATION = "configuration"
     CATALOGUE = "catalogue"
 
+
 class RedirectTargetClient(StrEnum):
     CATALOGUE = "catalogue"
     CONVERSATIONS = "conversations"
+
 
 class DLORequest(BaseModel):
     user_id: str
@@ -43,7 +46,7 @@ class DLORequest(BaseModel):
         """
         Build the DLO URL
         Returns:
-            The generated DLO URL
+            str: The generated DLO URL
         """
         nonce = self._generate_nonce()
         timestamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())

@@ -6,7 +6,12 @@ import pytest
 from freezegun import freeze_time
 from pydantic_core import ValidationError
 
-from dlo_client.dlo import DLORequest, UserType, RedirectTargetCareprovider, RedirectTargetClient
+from dlo_client.dlo import (
+    DLORequest,
+    RedirectTargetCareprovider,
+    RedirectTargetClient,
+    UserType,
+)
 
 
 def test_generate_hmac_token():
@@ -69,10 +74,14 @@ def test_usertype_is_invalid():
         ),
     ],
 )
-def test_generate_dlo_url_with_redirect(mocked_generate_nonce, usertype, redirect_target, expected_result):
+def test_generate_dlo_url_with_redirect(
+    mocked_generate_nonce, usertype, redirect_target, expected_result
+):
     mocked_generate_nonce.return_value = "1726841143309"
 
     with patch.dict(os.environ, {"SHARED_KEY_SECRET": "12345"}):
-        dlo_request = DLORequest(user_id="XXX", usertype=usertype, redirect=redirect_target)
+        dlo_request = DLORequest(
+            user_id="XXX", usertype=usertype, redirect=redirect_target
+        )
 
     assert dlo_request.generate_dlo_url() == expected_result
