@@ -6,7 +6,7 @@ import pytest
 from freezegun import freeze_time
 from pydantic_core import ValidationError
 
-from dlo_client.dlo import DLORequest, UserType
+from dlo_client.dlo import DLORequest, UserType, RedirectTargetCareprovider, RedirectTargetClient
 
 
 def test_generate_hmac_token():
@@ -50,3 +50,29 @@ def test_generate_dlo_url(mocked_generate_nonce, usertype, expected_result):
 def test_usertype_is_invalid():
     with pytest.raises(ValidationError):
         DLORequest(user_id="XXX", usertype="Wrong")
+
+
+@freeze_time("2024-09-20T17:25:18Z")
+@mock.patch("dlo_client.dlo.DLORequest._generate_nonce")
+@pytest.mark.parametrize(
+    "usertype, redirect_target, expected_result",
+    [
+        (
+            UserType.CAREPROVIDER,
+            RedirectTargetCareprovider.ALL_CLIENTS,
+            "https://ca-diroiaya.minddistrict.dev/aux/frameredirect?userid=XXX&usertype=careprovider&nonce=1726841143309&timestamp=2024-09-20T17%3A25%3A18Z&redirect=https%3A%2F%2Fca-diroiaya.minddistrict.dev%2Fc%2F%40%40allclients&token=4bfa0de82255e2702916144dc701e003da39f95307835acb1b796de1a378975332a02a05ba1c5897911a97eff7be05e5347599598e5c00524c6c5f956211b5d9",
+        ),
+        (
+            UserType.CLIENT,
+            RedirectTargetClient.CATALOGUE,
+            "https://ca-diroiaya.minddistrict.dev/aux/frameredirect?userid=XXX&usertype=client&nonce=1726841143309&timestamp=2024-09-20T17%3A25%3A18Z&redirect=https%3A%2F%2Fca-diroiaya.minddistrict.dev%2Fcatalogue&token=7c38baf264c87bb83c8d315aad8172683f454b4d685d381e6cbdf8e397fe4e45df5e801d18541307ae2957b586af77a818d4c998448a125c86e0748c0646eac8",
+        ),
+    ],
+)
+def test_generate_dlo_url_with_redirect(mocked_generate_nonce, usertype, redirect_target, expected_result):
+    mocked_generate_nonce.return_value = "1726841143309"
+
+    with patch.dict(os.environ, {"SHARED_KEY_SECRET": "12345"}):
+        dlo_request = DLORequest(user_id="XXX", usertype=usertype, redirect=redirect_target)
+
+    assert dlo_request.generate_dlo_url() == expected_result
