@@ -22,5 +22,6 @@ import dlo_client.views as dlo_views
 urlpatterns = [
     path('', dlo_views.index, name='index'),
     path('admin/', admin.site.urls),
-    path('redirect-example/', dlo_views.my_view, name='redirect-example'),
+    path('redirect_to_professional_account/', dlo_views.redirect_to_professional_account, name='redirect_to_professional_account'),
+    path('redirect_to_client_account/', dlo_views.redirect_to_client_account, name='redirect_to_client_account'),
 ]

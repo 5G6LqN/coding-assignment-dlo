@@ -12,7 +12,7 @@ BASE_URL = "https://ca-diroiaya.minddistrict.dev/"
 
 
 class UserType(StrEnum):
-    PROFESSIONAL = "careprovider"
+    CAREPROVIDER = "careprovider"
     CLIENT = "client"
 
 
