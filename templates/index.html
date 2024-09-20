@@ -7,12 +7,10 @@
 <body>
 <form action="{% url 'redirect_to_professional_account' %}" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
     <button type="submit">Go to Professional Account</button>
 </form>
 <form action="{% url 'redirect_to_client_account' %}" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
     <button type="submit">Go to Client Account</button>
 </form>
 </body>

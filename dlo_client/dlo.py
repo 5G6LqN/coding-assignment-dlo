@@ -24,7 +24,7 @@ class DLORequest(BaseModel):
 
     def __init__(self, user_id, usertype):
         super().__init__(user_id=user_id, usertype=usertype)
-        self.shared_secret_key = os.environ['SHARED_KEY_SECRET']
+        self.shared_secret_key = os.environ["SHARED_KEY_SECRET"]
 
     def generate_dlo_url(self) -> str:
         """
@@ -33,21 +33,21 @@ class DLORequest(BaseModel):
             The generated DLO URL
         """
         nonce = self._generate_nonce()
-        timestamp = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
+        timestamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
         params = {
-            'userid': self.user_id,
-            'usertype': self.usertype,
-            'nonce': nonce,
-            'timestamp': timestamp
+            "userid": self.user_id,
+            "usertype": self.usertype,
+            "nonce": nonce,
+            "timestamp": timestamp,
         }
 
         if self.redirect:
-            params['redirect'] = self.redirect
+            params["redirect"] = self.redirect
 
         # Generate the token
         token = self._generate_hmac_token(params, self.shared_secret_key)
-        params['token'] = token
+        params["token"] = token
 
         # Generate the final URL
         dlo_url = f"{BASE_URL}?{urlencode(params)}"
@@ -75,5 +75,7 @@ class DLORequest(BaseModel):
         Returns:
             str: The HMAC token
         """
-        message = ''.join(f'{k}{v}' for k, v in sorted(params.items()))
-        return hmac.new(secret_key.encode(), message.encode(), hashlib.sha512).hexdigest()
+        message = "".join(f"{k}{v}" for k, v in sorted(params.items()))
+        return hmac.new(
+            secret_key.encode(), message.encode(), hashlib.sha512
+        ).hexdigest()
