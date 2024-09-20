@@ -1,0 +1,25 @@
+services:
+  django:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=1
+      - DJANGO_SETTINGS_MODULE=minddistrict.settings
+    env_file:
+      - shared_key_secret.env
+
+  pytest:
+    build: .
+    container_name: pytest_runner
+    command: pytest --disable-warnings
+    volumes:
+      - .:/app
+    environment:
+      - DEBUG=1
+      - DJANGO_SETTINGS_MODULE=minddistrict.settings
+    env_file:
+      - shared_key_secret.env

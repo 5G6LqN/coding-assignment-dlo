@@ -1,0 +1,9 @@
+Dockerfile
+.git
+dlo_client/tests
+.pytest_cache
+*.pyc
+pyproject.toml
+.python-version
+.gitignore
+*.env
